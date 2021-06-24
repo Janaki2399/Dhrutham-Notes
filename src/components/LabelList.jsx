@@ -1,3 +1,3 @@
 export const LabelList = () => {
-  return <div></div>;
+  return <div className="mt-20 w-72">fdfdffddddddddd</div>;
 };

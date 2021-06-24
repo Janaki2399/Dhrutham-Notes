@@ -16,8 +16,14 @@ export const Login = () => {
     email: "",
     password: "",
   });
-  const { touchedFields, handleOnChange, handleOnBlur, validateLogin } =
-    useForms(setUserDetails);
+  const {
+    touchedFields,
+    handleOnChange,
+    handleOnBlur,
+    validateLogin,
+    isBtnDisabled,
+  } = useForms(setUserDetails);
+
   const [status, setStatus] = useState(API_STATUS.IDLE);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -41,6 +47,7 @@ export const Login = () => {
   const getInputClassName = (field) => {
     return shouldShowErrors(field) ? "error-input-box" : "generic-input-box";
   };
+
   return (
     <div className="flex flex-col items-center justify-evenly h-screen md:flex-row md:flex bg-gray-50">
       <div className="w-2/5">
@@ -82,7 +89,10 @@ export const Login = () => {
           </div>
 
           <div>
-            <button className="bg-primary-color text-white p-1 w-full mt-5">
+            <button
+              disabled={isBtnDisabled(errors)}
+              className="bg-primary-color text-white p-1 w-full mt-5"
+            >
               LOGIN
             </button>
           </div>
@@ -103,7 +113,9 @@ export const Login = () => {
           </div>
         )}
         {status === API_STATUS.ERROR && (
-          <div className="mt-5">{errorMessage}</div>
+          <div className="mt-5 bg-red-100 px-4 py-1 text-primary-color font-semibold">
+            {errorMessage}
+          </div>
         )}
       </div>
     </div>

@@ -11,10 +11,7 @@ export const login = async ({
 }) => {
   try {
     setStatus(API_STATUS.LOADING);
-    const { data, status } = await axios.post(
-      `${API_URL}/user/login`,
-      userDetails
-    );
+    const { data, status } = await axios.post(`${API_URL}/login`, userDetails);
 
     if (status === 200) {
       setStatus(API_STATUS.SUCCESS);

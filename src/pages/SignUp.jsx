@@ -19,8 +19,13 @@ export function SignUp() {
   const [status, setStatus] = useState(API_STATUS.IDLE);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { touchedFields, handleOnChange, handleOnBlur, validateSignUp } =
-    useForms(setUserDetails);
+  const {
+    touchedFields,
+    handleOnChange,
+    handleOnBlur,
+    validateSignUp,
+    isBtnDisabled,
+  } = useForms(setUserDetails);
 
   function handleSignUp(e) {
     e.preventDefault();
@@ -117,6 +122,7 @@ export function SignUp() {
 
           <div>
             <button
+              disabled={isBtnDisabled(errors)}
               className="bg-primary-color text-white p-1 w-full mt-5"
               type="submit"
             >
@@ -134,13 +140,15 @@ export function SignUp() {
             </span>
           </div>
         </form>
-        {(status === API_STATUS.LOADING || status === API_STATUS.IDLE) && (
+        {status === API_STATUS.LOADING && (
           <div className="mt-5">
             <Loader />
           </div>
         )}
         {status === API_STATUS.ERROR && (
-          <div className="mt-5 bg-red-200">{errorMessage}</div>
+          <div className="mt-5 bg-red-200 px-4 py-1 text-primary-color font-semibold">
+            {errorMessage}
+          </div>
         )}
       </div>
     </div>

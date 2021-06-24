@@ -11,10 +11,7 @@ export const signUp = async ({
 }) => {
   try {
     setStatus(API_STATUS.LOADING);
-    const { data, status } = await axios.post(
-      `${API_URL}/user/signup`,
-      userDetails
-    );
+    const { data, status } = await axios.post(`${API_URL}/signup`, userDetails);
     if (status === 200) {
       setStatus(API_STATUS.SUCCESS);
       setToken(data.token);
