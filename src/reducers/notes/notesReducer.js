@@ -12,7 +12,6 @@ export const notesReducer = (state, action) => {
       };
 
     case "CHANGE_PIN_STATE":
-      console.log(action.payload);
       return {
         ...state,
         notes: state.notes.map((note) =>
@@ -21,7 +20,19 @@ export const notesReducer = (state, action) => {
             : note
         ),
       };
-
+    case "ADD_LABEL":
+      return {
+        ...state,
+        notes: state.notes.map((note) =>
+          note._id === action.payload.noteId
+            ? {
+                ...note,
+                labelList: note.labelList.concat(action.payload.label),
+              }
+            : note
+        ),
+        labelsList: state.labelsList.concat(action.payload.label),
+      };
     default:
       return state;
   }

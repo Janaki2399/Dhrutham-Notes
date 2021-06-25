@@ -6,7 +6,7 @@ const NotesContext = createContext();
 export const NotesProvider = ({ children }) => {
   const [notesState, notesDispatch] = useReducer(notesReducer, {
     notes: [],
-    tagsList: [],
+    labelsList: [],
   });
 
   return (

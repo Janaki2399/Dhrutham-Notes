@@ -1,10 +1,16 @@
 import { NotesContainer } from "./NotesContainer";
 import { useNotes } from "../contexts/notes-context";
-export const Notes = () => {
+import { useLocation, useParams } from "react-router";
+export const Notes = ({ selectedLabel }) => {
   const {
     notesState: { notes },
   } = useNotes();
 
+  //   const location = useLocation();
+  //   console.log(location.hash);
+  //   const label = useParams();
+  //   console.log(label);
+  //   const filteredNotes = notes.filter((note) => note.name === selectedLabel);
   const pinnedNotes = notes.filter((note) => note.isPinned);
   const otherNotes = notes.filter((note) => !note.isPinned);
 

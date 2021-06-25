@@ -9,10 +9,12 @@ import { NavBar } from "./components/NavBar";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { useEffect, useState } from "react";
 import { fetchNotes } from "./services/fetchNotes";
+import { fetchLabelList } from "./services/fetchLabelList";
 import { useAuth } from "./contexts/auth-context";
 import { API_STATUS } from "./constants";
 import { useNotes } from "./contexts/notes-context";
 import { Loader } from "./components/Loader";
+import { Notes } from "./components/Notes";
 
 function App() {
   const { token } = useAuth();
@@ -22,6 +24,7 @@ function App() {
   useEffect(() => {
     if (token) {
       fetchNotes({ token, notesDispatch, setStatus, setErrorMessage });
+      fetchLabelList({ token, notesDispatch, setStatus, setErrorMessage });
     }
   }, [token, notesDispatch]);
 
@@ -39,6 +42,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <PrivateRoute path="/" element={<Home />} />
+        {/* <PrivateRoute path="#/label/:labelId" element={<Home />} /> */}
         {/* <Route path="/" element={<QuizCategories />} />  */}
       </Routes>
     </div>
