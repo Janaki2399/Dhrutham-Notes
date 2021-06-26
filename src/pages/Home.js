@@ -4,13 +4,12 @@ import { Notes } from "../components/Notes";
 import { useState } from "react";
 import { NavBar } from "../components/NavBar";
 export const Home = () => {
-  const [selectedLabel, setSelectedLabel] = useState(null);
   return (
     <main className="flex">
-      <LabelList setSelectedLabel={setSelectedLabel} />
+      <LabelList />
       <div>
-        <NotesInput selectedLabel={selectedLabel} />
-        <Notes selectedLabel={selectedLabel} />
+        <NotesInput />
+        <Notes />
       </div>
     </main>
   );

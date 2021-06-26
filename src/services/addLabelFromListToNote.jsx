@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API_STATUS, API_URL } from "../constants";
-export const fetchNotes = async ({
+export const addLabelFromListToNote = async ({
+  postObject,
   token,
   notesDispatch,
   setStatus,
@@ -8,16 +9,20 @@ export const fetchNotes = async ({
 }) => {
   try {
     setStatus(API_STATUS.LOADING);
-    const { data, status } = await axios.get(`${API_URL}/notes`, {
-      headers: {
-        authorization: token,
-      },
-    });
 
+    const { data, status } = await axios.post(
+      `${API_URL}/labels/in-list`,
+      postObject,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
     if (status === 200) {
       notesDispatch({
-        type: "LOAD_NOTES",
-        payload: { noteList: data.noteList },
+        type: "ADD_LABEL_FROM_LIST_TO_NOTE",
+        payload: { label: postObject.label, noteId: postObject.noteId },
       });
       setStatus(API_STATUS.SUCCESS);
     }

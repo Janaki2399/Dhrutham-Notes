@@ -1,26 +1,31 @@
 import { useState } from "react";
 import { useNotes } from "../contexts/notes-context";
 import { useAuth } from "../contexts/auth-context";
+import { LabelCheckBox } from "./LabelCheckbox";
 import { addLabelInNote } from "../services/addLabelInNote";
 import { API_STATUS } from "../constants";
-export const LabelsDropdown = ({ noteId, isNoteItem }) => {
+export const LabelsDropdown = ({
+  noteId,
+  isLabelDropDownOpen,
+  labelsInNote,
+}) => {
   const {
-    notesState: { labelsList },
+    notesState: { notes, labelsList },
     notesDispatch,
   } = useNotes();
   const [input, setInput] = useState("");
-  //   const { dispatch, state } = useDataContext();
+  const [checkbox, setCheckBox] = useState(getLabels());
+
   const { token } = useAuth();
-  //   const [checkbox, setCheckBox] = useState(getLabels());
   const [status, setStatus] = useState(API_STATUS.IDLE);
   const [errorMessage, setErrorMessage] = useState("");
-  function checkIfItemExistsInList(labelsList, noteId) {
-    return labelsList.some((item) => item._id === noteId);
+  function checkIfItemExistsInList(labelId, labelsInNote) {
+    return labelsInNote.some((item) => item._id === labelId);
   }
 
   function getLabels() {
     return labelsList.map((item, index) => {
-      if (checkIfItemExistsInList(item.list, noteId)) {
+      if (checkIfItemExistsInList(item._id, labelsInNote)) {
         return {
           id: item._id,
           name: item.name,
@@ -34,26 +39,6 @@ export const LabelsDropdown = ({ noteId, isNoteItem }) => {
       };
     });
   }
-  //   const addToListAndServer = async (playlistObject) => {
-  //     try {
-  //       // showToast(`Adding to ${toastItem}`);
-  //       const { data, status } = await axios.post(
-  //         `https://dhrutham-play-backend.herokuapp.com/library`,
-  //         playlistObject,
-  //         {
-  //           headers: {
-  //             authorization: token,
-  //           },
-  //         }
-  //       );
-  //       if (status === 200) {
-  //         dispatch({ type: "SET_LIBRARY", payload: data.library });
-  //       }
-  //     } catch (error) {
-  //       alert(error);
-  //     }
-  //   };
-
   async function createLabel() {
     const postObject = {
       labelName: input,
@@ -71,17 +56,24 @@ export const LabelsDropdown = ({ noteId, isNoteItem }) => {
     // setModal(false);
   }
   return (
-    <div className="padding-left flex-column margin-bottom">
-      {/* <div className="drop-down">
+    <div
+      className={
+        isLabelDropDownOpen
+          ? "block absolute border-2 z-10 bg-white "
+          : "hidden"
+      }
+    >
+      <div className="drop-down h-36 overflow-y-scroll">
         {checkbox.map((item, index) => (
-          <PlaylistCheckBox
+          <LabelCheckBox
+            key={item.id}
             item={item}
             index={index}
-            videoId={videoId}
+            noteId={noteId}
             setCheckBox={setCheckBox}
           />
         ))}
-      </div> */}
+      </div>
       <div className="padding-bottom padding-right">
         <input
           className="border-bottom font-size-6 full-width margin-top"

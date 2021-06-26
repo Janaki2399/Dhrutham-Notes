@@ -1,10 +1,15 @@
 import { useNotes } from "../contexts/notes-context";
-import axios from "axios";
+import { addLabelFromListToNote } from "../services/addLabelFromListToNote";
 import { useAuth } from "../contexts/auth-context";
+import { useState } from "react";
+import { API_STATUS } from "../constants";
+import { removeLabelFromNote } from "../services/removeLabelFromNote";
 
-export function LabelCheckBox({ item, index, videoId, setCheckBox }) {
-  const { dispatch, state } = useNotes();
+export function LabelCheckBox({ item, index, noteId, setCheckBox }) {
   const { token } = useAuth();
+  const { notesDispatch } = useNotes();
+  const [status, setStatus] = useState(API_STATUS.IDLE);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleToggle = (i) => {
     setCheckBox((prev) =>
@@ -14,75 +19,33 @@ export function LabelCheckBox({ item, index, videoId, setCheckBox }) {
     );
   };
 
-  const addToListAndServer = async () => {
-    try {
-      // showToast(`Adding to ${toastItem}`);
-      const { data, status } = await axios.post(
-        `https://dhrutham-play-backend.herokuapp.com/playlist/${item.id}`,
-        {
-          _id: videoId,
-        },
-        {
-          headers: {
-            authorization: token,
-          },
-        }
-      );
-      if (status === 200) {
-        dispatch({
-          type: "APPEND_TO_PLAYLIST",
-          payload: { playlistId: item.id, videoId: videoId },
-        });
-      }
-    } catch (error) {
-      alert(error);
-    }
-  };
-  const removeFromListAndServer = async () => {
-    try {
-      const { data, status } = await axios.delete(
-        `https://dhrutham-play-backend.herokuapp.com/playlist/${item.id}/${videoId}`,
-        {
-          headers: {
-            authorization: token,
-          },
-        }
-      );
-
-      if (status === 200) {
-        dispatch({
-          type: "REMOVE_ITEM_FROM_PLAYLIST",
-          payload: { playlistId: item.id, videoId: videoId },
-        });
-        if (state.selectedCategory._id === item.id) {
-          dispatch({
-            type: "REMOVE_ITEM_FROM_SELECTED_PLAYLIST",
-            payload: videoId,
-          });
-        }
-      }
-    } catch (error) {
-      alert(error);
-    }
-  };
   const toggleCheckBox = (event) => {
+    const postObject = { label: item, noteId };
+    const deleteObject = { noteId, labelId: item.id };
+
     handleToggle(index);
+
     if (event.target.checked) {
-      addToListAndServer();
+      addLabelFromListToNote({
+        postObject,
+        token,
+        notesDispatch,
+        setStatus,
+      });
     } else {
-      removeFromListAndServer();
+      removeLabelFromNote({ deleteObject, token, notesDispatch, setStatus });
     }
   };
   return (
-    <div className="flex-horizontal margin-top cursor-pointer">
+    <div className="flex cursor-pointer">
       <input
         type="checkbox"
         id={item.id}
-        className="margin-right checkbox-size"
+        className="mr-1 checkbox-size"
         checked={item.checked}
         onChange={toggleCheckBox}
       />
-      <label className="full-width font-size-5" for={item.id}>
+      <label className="w-full font-size-5" htmlFor={item.id}>
         {item.name}
       </label>
     </div>

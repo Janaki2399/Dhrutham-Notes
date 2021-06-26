@@ -25,6 +25,11 @@ export const NotesInput = () => {
   const changePinState = () => {
     setPinStatus((previousState) => !previousState);
   };
+
+  const changeColor = (newColor) => {
+    setColor(newColor);
+  };
+
   const addNote = async () => {
     const note = {
       title,
@@ -72,10 +77,10 @@ export const NotesInput = () => {
 
       <div className="flex">{}</div>
       <div className="flex w-full justify-between border-none m-1">
-        <ColorPalette setColor={setColor} />
+        <ColorPalette changeColor={changeColor} />
         <div>
           <button
-            className="text-primary-color "
+            className="text-blue-color"
             onClick={addNote}
             disabled={status === "loading"}
           >

@@ -2,9 +2,8 @@ import { NoteItem } from "./NoteItem";
 
 export const NotesContainer = ({ notes, pinAction }) => {
   return (
-    <div className="grid grid-flow-row grid-cols-4 grid-rows-4 md:grid-cols-4 md:grid-grid-rows-2 md-grid-flow-row gap-10 ">
+    <div className="grid grid-cols-1 grid-flow-row auto-rows-max gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
       {notes.map(({ _id, title, text, isPinned, color, labelList }) => {
-        console.log(labelList);
         return (
           <NoteItem
             key={_id}

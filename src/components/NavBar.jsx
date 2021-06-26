@@ -11,7 +11,7 @@ export const NavBar = () => {
   };
 
   return (
-    <div className="navbar flex justify-between align-middle">
+    <div className="navbar flex justify-between align-middle fixed z-10">
       <div
         className="text-primary-color font-semibold text-xl"
         onClick={() => {
