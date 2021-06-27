@@ -18,7 +18,6 @@ export const removeLabelFromNote = async ({
       }
     );
     if (status === 200) {
-      console.log("removed labelId");
       notesDispatch({
         type: "REMOVE_LABEL_FROM_NOTE",
         payload: { labelId: deleteObject.labelId, noteId: deleteObject.noteId },

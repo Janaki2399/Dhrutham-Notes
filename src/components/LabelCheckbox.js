@@ -20,7 +20,7 @@ export function LabelCheckBox({ item, index, noteId, setCheckBox }) {
   };
 
   const toggleCheckBox = (event) => {
-    const postObject = { label: item, noteId };
+    const postObject = { label: { _id: item.id, name: item.name }, noteId };
     const deleteObject = { noteId, labelId: item.id };
 
     handleToggle(index);

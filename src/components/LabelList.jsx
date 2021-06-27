@@ -11,7 +11,7 @@ export const LabelList = () => {
     navigate(`#/labels/${label._id}`);
   };
   return (
-    <div className="mt-20 w-72">
+    <div className="mt-20 w-56 fixed left-0 overflow-y-scroll">
       {labelsList.map(({ _id, name }) => {
         return (
           <div

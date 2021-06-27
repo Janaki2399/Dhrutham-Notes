@@ -7,7 +7,7 @@ export const Home = () => {
   return (
     <main className="flex">
       <LabelList />
-      <div>
+      <div className="ml-60">
         <NotesInput />
         <Notes />
       </div>

@@ -6,6 +6,7 @@ import { useNotes } from "../contexts/notes-context";
 import { updatePinStatus } from "../services/updatePinStatus";
 import { updateColor } from "../services/updateColor";
 import { useState } from "react";
+import { deleteNote } from "../services/deleteNote";
 import { API_STATUS } from "../constants";
 import { useAuth } from "../contexts/auth-context";
 
@@ -21,6 +22,8 @@ export const NoteItem = ({
   const [isLabelDropDownOpen, setLabelDropDownOpen] = useState(false);
   const [status, setStatus] = useState(API_STATUS.IDLE);
   const [colorChangeStatus, setColorChangeStatus] = useState(API_STATUS.IDLE);
+
+  const [deleteStatus, setDeleteStatus] = useState(API_STATUS.IDLE);
   const { token } = useAuth();
 
   const pinAction = () => {
@@ -42,6 +45,11 @@ export const NoteItem = ({
   const openLabelDropDown = () => {
     setLabelDropDownOpen((prevState) => !prevState);
   };
+
+  const deleteNoteItem = () => {
+    deleteNote({ noteId, token, setDeleteStatus, notesDispatch });
+  };
+
   return (
     <div
       style={{ backgroundColor: color }}
@@ -61,16 +69,26 @@ export const NoteItem = ({
         <div>
           <LabelPills labels={labelList} />
 
-          <div className="mt-3 mb-3 flex">
-            <ColorPalette
-              changeColor={changeColor}
-              colorChangeStatus={colorChangeStatus}
-            />
-            <button
-              className="ml-4 focus:outline-none"
-              onClick={openLabelDropDown}
-            >
-              <span className="material-icons text-gray-500 ">new_label</span>
+          <div className="mt-3 mb-3 flex justify-between">
+            <div className="flex">
+              <ColorPalette
+                changeColor={changeColor}
+                colorChangeStatus={colorChangeStatus}
+              />
+              <button
+                className="ml-4 focus:outline-none"
+                onClick={openLabelDropDown}
+              >
+                <span className="material-icons-outlined text-gray-500 ">
+                  new_label
+                </span>
+              </button>
+            </div>
+
+            <button className=" focus:outline-none" onClick={deleteNoteItem}>
+              <span className="material-icons-outlined text-gray-500 ">
+                delete
+              </span>
             </button>
           </div>
         </div>
