@@ -50,7 +50,7 @@ export const Login = () => {
 
   return (
     <div className="flex flex-col items-center justify-evenly h-screen md:flex-row md:flex bg-gray-50">
-      <div className="w-2/5">
+      <div className="md:w-2/5 hidden">
         <img src={notes} alt="img" />
       </div>
       <div className="flex flex-col items-center justify-center h-screen">

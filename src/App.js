@@ -42,7 +42,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <PrivateRoute path="/" element={<Home />} />
-        {/* <PrivateRoute path="#/label/:labelId" element={<Home />} /> */}
+        <PrivateRoute path="/labels/:labelName" element={<Home />} />
         {/* <Route path="/" element={<QuizCategories />} />  */}
       </Routes>
     </div>

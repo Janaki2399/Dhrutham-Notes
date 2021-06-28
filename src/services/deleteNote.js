@@ -15,11 +15,11 @@ export const deleteNote = async ({
       },
     });
     if (status === 200) {
+      setDeleteStatus(API_STATUS.SUCCESS);
       notesDispatch({
         type: "DELETE_NOTE",
         payload: { noteId },
       });
-      setDeleteStatus(API_STATUS.SUCCESS);
     }
   } catch (error) {
     setDeleteStatus(API_STATUS.ERROR);

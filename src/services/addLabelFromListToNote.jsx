@@ -11,7 +11,7 @@ export const addLabelFromListToNote = async ({
     setStatus(API_STATUS.LOADING);
 
     const { data, status } = await axios.post(
-      `${API_URL}/labels/in-list`,
+      `${API_URL}/notes/${postObject.noteId}/labels/`,
       postObject,
       {
         headers: {
@@ -27,7 +27,8 @@ export const addLabelFromListToNote = async ({
       setStatus(API_STATUS.SUCCESS);
     }
   } catch (error) {
+    console.log(error);
     setStatus(API_STATUS.ERROR);
-    setErrorMessage(error);
+    // setErrorMessage(error);
   }
 };

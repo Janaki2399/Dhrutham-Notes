@@ -3,12 +3,17 @@ import { ColorPalette } from "./ColorPalette";
 import { LabelPills } from "./LabelPills";
 import { LabelsDropdown } from "./LabelsDropdown";
 import { useNotes } from "../contexts/notes-context";
+import { useAuth } from "../contexts/auth-context";
 import { updatePinStatus } from "../services/updatePinStatus";
 import { updateColor } from "../services/updateColor";
+import { addLabelInNote } from "../services/addLabelInNote";
+import { addLabelFromListToNote } from "../services/addLabelFromListToNote";
+import { removeLabelFromNote } from "../services/removeLabelFromNote";
 import { useState } from "react";
+import { Modal } from "./Modal";
+import { NotesInput } from "./NotesInput";
 import { deleteNote } from "../services/deleteNote";
 import { API_STATUS } from "../constants";
-import { useAuth } from "../contexts/auth-context";
 
 export const NoteItem = ({
   noteId,
@@ -20,9 +25,9 @@ export const NoteItem = ({
 }) => {
   const { notesDispatch } = useNotes();
   const [isLabelDropDownOpen, setLabelDropDownOpen] = useState(false);
+  const [modal, setModal] = useState(false);
   const [status, setStatus] = useState(API_STATUS.IDLE);
   const [colorChangeStatus, setColorChangeStatus] = useState(API_STATUS.IDLE);
-
   const [deleteStatus, setDeleteStatus] = useState(API_STATUS.IDLE);
   const { token } = useAuth();
 
@@ -50,6 +55,45 @@ export const NoteItem = ({
     deleteNote({ noteId, token, setDeleteStatus, notesDispatch });
   };
 
+  const openModal = () => {
+    setModal(true);
+  };
+
+  async function createLabel(input, setInput) {
+    const postObject = {
+      labelName: input,
+      noteId,
+    };
+    await addLabelInNote({
+      postObject,
+      token,
+      notesDispatch,
+      setStatus,
+      // setErrorMessage,
+    });
+    setInput("");
+  }
+
+  const toggleCheckBox = (event, item) => {
+    const postObject = { label: { _id: item._id, name: item.name }, noteId };
+    const deleteObject = { noteId, labelId: item._id };
+
+    if (event.target.checked) {
+      addLabelFromListToNote({
+        postObject,
+        token,
+        notesDispatch,
+        setStatus,
+      });
+    } else {
+      removeLabelFromNote({ deleteObject, token, notesDispatch, setStatus });
+    }
+  };
+
+  function checkIfLabelExistsInList(labelId) {
+    return labelList.some((item) => item._id === labelId);
+  }
+
   return (
     <div
       style={{ backgroundColor: color }}
@@ -73,6 +117,7 @@ export const NoteItem = ({
             <div className="flex">
               <ColorPalette
                 changeColor={changeColor}
+                currentColor={color}
                 colorChangeStatus={colorChangeStatus}
               />
               <button
@@ -81,6 +126,14 @@ export const NoteItem = ({
               >
                 <span className="material-icons-outlined text-gray-500 ">
                   new_label
+                </span>
+              </button>
+              <button
+                className=" focus:outline-none"
+                onClick={() => setModal(true)}
+              >
+                <span className="material-icons-outlined text-gray-500 ">
+                  edit
                 </span>
               </button>
             </div>
@@ -94,10 +147,20 @@ export const NoteItem = ({
         </div>
       </div>
       <LabelsDropdown
-        noteId={noteId}
         isLabelDropDownOpen={isLabelDropDownOpen}
         labelsInNote={labelList}
+        labelCreationAction={createLabel}
+        checkboxTogglingAction={toggleCheckBox}
+        isLabelInList={checkIfLabelExistsInList}
       />
+      {modal && (
+        <Modal setModal={setModal}>
+          <NotesInput
+            noteItem={{ noteId, title, text, isPinned, color, labelList }}
+            isNoteUpdate
+          />
+        </Modal>
+      )}
     </div>
   );
 };

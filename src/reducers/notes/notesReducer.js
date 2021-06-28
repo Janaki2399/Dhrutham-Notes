@@ -59,6 +59,11 @@ export const notesReducer = (state, action) => {
             : note
         ),
       };
+    case "ADD_LABEL_TO_LIST":
+      return {
+        ...state,
+        labelsList: state.labelsList.concat(action.payload.label),
+      };
 
     case "REMOVE_LABEL_FROM_NOTE":
       return {

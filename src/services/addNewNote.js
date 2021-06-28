@@ -15,6 +15,7 @@ export const addNewNote = async ({
       },
     });
     if (status === 200) {
+      console.log(data.note);
       notesDispatch({ type: "ADD_NOTE", payload: { note: data.note } });
       setStatus(API_STATUS.SUCCESS);
     }
