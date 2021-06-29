@@ -5,7 +5,7 @@ export const addLabelFromListToNote = async ({
   token,
   notesDispatch,
   setStatus,
-  setErrorMessage,
+  showToast,
 }) => {
   try {
     setStatus(API_STATUS.LOADING);
@@ -29,6 +29,6 @@ export const addLabelFromListToNote = async ({
   } catch (error) {
     console.log(error);
     setStatus(API_STATUS.ERROR);
-    // setErrorMessage(error);
+    showToast("Something went wrong");
   }
 };

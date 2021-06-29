@@ -5,6 +5,7 @@ export const updateColor = async ({
   token,
   notesDispatch,
   setColorChangeStatus,
+  showToast,
 }) => {
   try {
     setColorChangeStatus(API_STATUS.LOADING);
@@ -29,6 +30,6 @@ export const updateColor = async ({
     }
   } catch (error) {
     setColorChangeStatus(API_STATUS.ERROR);
-    // setErrorMessage(error);
+    showToast("Something went wrong");
   }
 };

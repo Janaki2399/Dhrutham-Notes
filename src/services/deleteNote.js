@@ -5,6 +5,7 @@ export const deleteNote = async ({
   token,
   notesDispatch,
   setDeleteStatus,
+  showToast,
 }) => {
   try {
     setDeleteStatus(API_STATUS.LOADING);
@@ -23,5 +24,6 @@ export const deleteNote = async ({
     }
   } catch (error) {
     setDeleteStatus(API_STATUS.ERROR);
+    showToast("Something went wrong");
   }
 };

@@ -1,7 +1,7 @@
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useNotes } from "../contexts/notes-context";
 
-export const LabelList = () => {
+export const LabelList = ({ isLabelListOpen }) => {
   const navigate = useNavigate();
   const {
     notesState: { labelsList },
@@ -20,7 +20,7 @@ export const LabelList = () => {
           handleLabelSelection(name);
         }}
       >
-        <span class="material-icons-outlined text-gray-600 mr-5 pt-1">
+        <span className="material-icons-outlined text-gray-600 mr-5 pt-1">
           label
         </span>
         {name}
@@ -29,7 +29,13 @@ export const LabelList = () => {
   });
 
   return (
-    <div className="mt-20 md:fixed md:block md:w-1/5 fixed left-0 overflow-auto h-screen hidden w-56">
+    <div
+      className={
+        isLabelListOpen
+          ? " transform transition ease-in-out duration-150 mt-20 fixed w-3/5 md:w-1/5 left-0 overflow-y-auto h-screen  z-20 bg-white"
+          : "mt-20 md:fixed md:block md:w-1/5 fixed left-0 overflow-y-auto h-screen hidden w-56 "
+      }
+    >
       <div
         className="hover:bg-gray-200 text-lg p-1 cursor-pointer pl-5"
         onClick={() => navigate("/")}

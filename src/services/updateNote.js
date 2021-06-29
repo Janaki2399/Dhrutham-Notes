@@ -1,17 +1,18 @@
 import axios from "axios";
 import { API_STATUS, API_URL } from "../constants";
-export const updateColor = async ({
-  updateObject,
+export const updateNote = async ({
+  note,
   token,
   notesDispatch,
-  setColorChangeStatus,
+  setStatus,
+  showToast,
 }) => {
   try {
-    setColorChangeStatus(API_STATUS.LOADING);
+    setStatus(API_STATUS.LOADING);
     const { data, status } = await axios.post(
-      `${API_URL}/notes/${updateObject.noteId}`,
+      `${API_URL}/notes/${note.noteId}`,
       {
-        updateObject,
+        ...note,
       },
       {
         headers: {
@@ -23,12 +24,12 @@ export const updateColor = async ({
     if (status === 200) {
       notesDispatch({
         type: "UPDATE_NOTE",
-        payload: { noteId: updateObject.noteId, note: data.note },
+        payload: { noteId: note.noteId, note: data.note },
       });
-      setColorChangeStatus(API_STATUS.SUCCESS);
+      setStatus(API_STATUS.SUCCESS);
     }
   } catch (error) {
-    setColorChangeStatus(API_STATUS.ERROR);
-    // setErrorMessage(error);
+    setStatus(API_STATUS.ERROR);
+    showToast("Something went wrong");
   }
 };

@@ -4,7 +4,7 @@ import { signUp } from "../services/signUp";
 import { API_STATUS } from "../constants";
 import { useAuth } from "../contexts/auth-context";
 import { Loader } from "../components/Loader";
-import notes from "../assets/Add notes-amico.svg";
+import notes from "../assets/notes.svg";
 import { useForms } from "../hooks/useForms";
 
 export function SignUp() {
@@ -55,7 +55,7 @@ export function SignUp() {
   };
   return (
     <div className="flex flex-col items-center justify-evenly h-screen md:flex-row md:flex bg-gray-50">
-      <div className="w-2/5">
+      <div className=" md:w-2/5 md:visible">
         <img src={notes} alt="img" />
       </div>
       <div className="flex flex-col items-center justify-center h-screen">

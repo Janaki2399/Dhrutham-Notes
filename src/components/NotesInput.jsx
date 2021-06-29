@@ -6,16 +6,19 @@ import { useAuth } from "../contexts/auth-context";
 import { Loader } from "../components/Loader";
 import { addNewNote } from "../services/addNewNote";
 import { addLabelToList } from "../services/addLabelToList";
+import { updateNote } from "../services/updateNote";
 import { useNotes } from "../contexts/notes-context";
 import { LabelsDropdown } from "./LabelsDropdown";
 import { LabelPills } from "./LabelPills";
 import { useParams } from "react-router";
+import { useToast } from "../contexts/toast-context";
 
-export const NotesInput = ({ noteItem, isNoteUpdate }) => {
+export const NotesInput = ({ noteItem, isNoteUpdate, setModal }) => {
   const { token } = useAuth();
   const { labelName } = useParams();
   const notesRef = useRef(null);
   const { notesDispatch } = useNotes();
+  const { showToast } = useToast();
 
   // const {state,dispatch}=useReducer(inputRedinitialState)
 
@@ -75,7 +78,7 @@ export const NotesInput = ({ noteItem, isNoteUpdate }) => {
       token,
       notesDispatch,
       setStatus,
-      setErrorMessage,
+      showToast,
     });
 
     setPinStatus(false);
@@ -85,8 +88,9 @@ export const NotesInput = ({ noteItem, isNoteUpdate }) => {
     notesRef.current.innerText = "";
   };
 
-  const updateNote = () => {
+  const updateNoteItem = () => {
     const note = {
+      noteId: noteItem.noteId,
       title,
       text: notesRef.current.innerText,
       isPinned,
@@ -98,7 +102,7 @@ export const NotesInput = ({ noteItem, isNoteUpdate }) => {
       token,
       notesDispatch,
       setStatus,
-      setErrorMessage,
+      showToast,
     });
   };
 
@@ -116,7 +120,7 @@ export const NotesInput = ({ noteItem, isNoteUpdate }) => {
       notesDispatch,
       setLabelList,
       setStatus,
-      // setErrorMessage,
+      showToast,
     });
     setInput("");
   }
@@ -136,7 +140,7 @@ export const NotesInput = ({ noteItem, isNoteUpdate }) => {
   }
   return (
     <div
-      className="relative dropdown m-auto flex flex-col w-9/10 max-w-2xl px-3 shadow-2xl rounded-lg mt-20 py-2"
+      className="relative dropdown m-auto flex flex-col w-9/10 max-w-2xl px-3 shadow-2xl rounded-lg  py-2"
       style={{ backgroundColor: color }}
     >
       <div className="flex justify-between">
@@ -157,9 +161,7 @@ export const NotesInput = ({ noteItem, isNoteUpdate }) => {
         tabIndex="0"
         spellCheck="false"
         ref={notesRef}
-      >
-        {notesRef.current.innerText}
-      </div>
+      ></div>
 
       <LabelPills labels={labelList} />
       <div className="flex w-full justify-between border-none m-1">
@@ -176,15 +178,24 @@ export const NotesInput = ({ noteItem, isNoteUpdate }) => {
         </div>
 
         <div>
+          {isNoteUpdate && (
+            <button
+              className="text-primary-color font-semibold mr-5 focus:outline-none"
+              onClick={() => setModal(false)}
+            >
+              <div>Close</div>
+            </button>
+          )}
+
           <button
             className="text-primary-color font-semibold"
-            onClick={isNoteUpdate ? updateNote : addNote}
-            disabled={status === "loading"}
+            onClick={isNoteUpdate ? updateNoteItem : addNote}
+            disabled={status === "loading" || title.length === 0}
           >
             {status === "loading" ? (
               <Loader />
             ) : (
-              <div>{isNoteUpdate ? "UPDATE" : "ADD"}</div>
+              <div>{isNoteUpdate ? "Save" : "Add"}</div>
             )}
           </button>
         </div>

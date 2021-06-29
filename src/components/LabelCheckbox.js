@@ -1,14 +1,17 @@
 export function LabelCheckBox({ item, checkboxTogglingAction, isLabelInList }) {
+  const handleToggling = (event) => {
+    checkboxTogglingAction(event, item);
+  };
   return (
-    <div className="flex cursor-pointer">
+    <div className="flex cursor-pointer ml-2">
       <input
         type="checkbox"
         id={item._id}
-        className="mr-1 checkbox-size "
+        className="mr-1 h-4 "
         checked={isLabelInList(item._id)}
-        onChange={(event) => checkboxTogglingAction(event, item)}
+        onChange={handleToggling}
       />
-      <label className="w-full font-size-5" htmlFor={item._id}>
+      <label className="w-full font-size-5 ml-3" htmlFor={item._id}>
         {item.name}
       </label>
     </div>

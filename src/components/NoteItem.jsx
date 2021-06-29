@@ -14,6 +14,7 @@ import { Modal } from "./Modal";
 import { NotesInput } from "./NotesInput";
 import { deleteNote } from "../services/deleteNote";
 import { API_STATUS } from "../constants";
+import { useToast } from "../contexts/toast-context";
 
 export const NoteItem = ({
   noteId,
@@ -24,6 +25,7 @@ export const NoteItem = ({
   labelList,
 }) => {
   const { notesDispatch } = useNotes();
+  const { showToast } = useToast();
   const [isLabelDropDownOpen, setLabelDropDownOpen] = useState(false);
   const [modal, setModal] = useState(false);
   const [status, setStatus] = useState(API_STATUS.IDLE);
@@ -36,7 +38,13 @@ export const NoteItem = ({
       isPinned,
       noteId,
     };
-    updatePinStatus({ updateObject, token, notesDispatch, setStatus });
+    updatePinStatus({
+      updateObject,
+      token,
+      notesDispatch,
+      setStatus,
+      showToast,
+    });
   };
 
   const changeColor = (newColor) => {
@@ -44,7 +52,13 @@ export const NoteItem = ({
       color: newColor,
       noteId,
     };
-    updateColor({ updateObject, token, notesDispatch, setColorChangeStatus });
+    updateColor({
+      updateObject,
+      token,
+      notesDispatch,
+      setColorChangeStatus,
+      showToast,
+    });
   };
 
   const openLabelDropDown = () => {
@@ -52,7 +66,7 @@ export const NoteItem = ({
   };
 
   const deleteNoteItem = () => {
-    deleteNote({ noteId, token, setDeleteStatus, notesDispatch });
+    deleteNote({ noteId, token, setDeleteStatus, notesDispatch, showToast });
   };
 
   const openModal = () => {
@@ -69,7 +83,7 @@ export const NoteItem = ({
       token,
       notesDispatch,
       setStatus,
-      // setErrorMessage,
+      showToast,
     });
     setInput("");
   }
@@ -84,9 +98,16 @@ export const NoteItem = ({
         token,
         notesDispatch,
         setStatus,
+        showToast,
       });
     } else {
-      removeLabelFromNote({ deleteObject, token, notesDispatch, setStatus });
+      removeLabelFromNote({
+        deleteObject,
+        token,
+        notesDispatch,
+        setStatus,
+        showToast,
+      });
     }
   };
 
@@ -128,10 +149,7 @@ export const NoteItem = ({
                   new_label
                 </span>
               </button>
-              <button
-                className=" focus:outline-none"
-                onClick={() => setModal(true)}
-              >
+              <button className=" focus:outline-none" onClick={openModal}>
                 <span className="material-icons-outlined text-gray-500 ">
                   edit
                 </span>
@@ -154,10 +172,11 @@ export const NoteItem = ({
         isLabelInList={checkIfLabelExistsInList}
       />
       {modal && (
-        <Modal setModal={setModal}>
+        <Modal>
           <NotesInput
             noteItem={{ noteId, title, text, isPinned, color, labelList }}
             isNoteUpdate
+            setModal={setModal}
           />
         </Modal>
       )}

@@ -16,6 +16,15 @@ export const notesReducer = (state, action) => {
         notes: state.notes.concat(action.payload.note),
       };
 
+    case "UPDATE_NOTE":
+      return {
+        ...state,
+        notes: state.notes.map((note) =>
+          note._id === action.payload.noteId
+            ? { ...action.payload.note }
+            : { ...note }
+        ),
+      };
     case "CHANGE_PIN_STATE":
       return {
         ...state,

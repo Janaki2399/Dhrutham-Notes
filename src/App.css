@@ -1,15 +1,12 @@
-.App {
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
 [contenteditable]:empty:before {
   content: "Take a note";
   pointer-events: none;
   color: #9ca3af;
   font-weight: 600;
   display: block; /* For Firefox */
+}
+
+.loader-border {
+  border-right-color: #aa3a3a;
+  border-top-color: #aa3a3a;
 }

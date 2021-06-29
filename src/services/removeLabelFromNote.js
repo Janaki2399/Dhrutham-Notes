@@ -5,6 +5,7 @@ export const removeLabelFromNote = async ({
   token,
   notesDispatch,
   setStatus,
+  showToast,
 }) => {
   try {
     setStatus(API_STATUS.LOADING);
@@ -26,6 +27,6 @@ export const removeLabelFromNote = async ({
     }
   } catch (error) {
     setStatus(API_STATUS.ERROR);
-    // setErrorMessage(error);
+    showToast("Something went wrong");
   }
 };

@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useNotes } from "../contexts/notes-context";
-import { useAuth } from "../contexts/auth-context";
 import { LabelCheckBox } from "./LabelCheckbox";
 
 export const LabelsDropdown = ({
   isLabelDropDownOpen,
-  labelsInNote,
   labelCreationAction,
   checkboxTogglingAction,
   isLabelInList,
@@ -16,32 +14,34 @@ export const LabelsDropdown = ({
 
   const [input, setInput] = useState("");
 
+  const getLabelDropDownStyles = () => {
+    if (isLabelDropDownOpen) {
+      return "block absolute border-2 z-10 bg-white right-0 shadow-xl";
+    }
+    return "hidden";
+  };
+
+  const checkboxList = labelsList.map((item) => (
+    <LabelCheckBox
+      key={item._id}
+      item={item}
+      checkboxTogglingAction={checkboxTogglingAction}
+      isLabelInList={isLabelInList}
+    />
+  ));
+
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+  };
+
   return (
-    <div
-      className={
-        isLabelDropDownOpen
-          ? "block absolute border-2 z-10 bg-white right-0 shadow-xl"
-          : "hidden"
-      }
-    >
-      <div className="drop-down h-36 overflow-y-scroll">
-        {labelsList.map((item) => (
-          <LabelCheckBox
-            key={item._id}
-            item={item}
-            checkboxTogglingAction={checkboxTogglingAction}
-            isLabelInList={isLabelInList}
-          />
-        ))}
-      </div>
-      <div className="padding-bottom padding-right">
+    <div className={getLabelDropDownStyles()}>
+      <div className="drop-down h-36 overflow-y-scroll">{checkboxList}</div>
+      <div>
         <input
-          className="border-bottom font-size-6 full-width margin-top"
-          style={{ height: "1.3rem", outline: "0" }}
+          className=" w-full mt-2 h-4 focus:outline-none"
           value={input}
-          onChange={(e) => {
-            setInput(e.target.value);
-          }}
+          onChange={handleInputChange}
           placeholder="Enter label name"
         ></input>
 

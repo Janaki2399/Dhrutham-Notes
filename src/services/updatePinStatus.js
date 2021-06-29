@@ -5,10 +5,11 @@ export const updatePinStatus = async ({
   token,
   notesDispatch,
   setStatus,
+  showToast,
 }) => {
   try {
     setStatus(API_STATUS.LOADING);
-    const { data, status } = await axios.post(
+    const { status } = await axios.post(
       `${API_URL}/notes/${updateObject.noteId}`,
       {
         isPinned: !updateObject.isPinned,
@@ -29,6 +30,6 @@ export const updatePinStatus = async ({
     }
   } catch (error) {
     setStatus(API_STATUS.ERROR);
-    // setErrorMessage(error);
+    showToast("Something went wrong");
   }
 };
