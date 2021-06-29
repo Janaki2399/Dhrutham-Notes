@@ -16,9 +16,14 @@ export const Notes = () => {
       </div>
     );
   }
-  const filteredNotes = notes.filter((note) =>
-    labelName ? note.labelList.some((label) => label.name === labelName) : true
-  );
+  const filteredNotes = notes
+    .filter((note) =>
+      labelName
+        ? note.labelList.some((label) => label.name === labelName)
+        : true
+    )
+    .sort((note1, note2) => note2.createdAt.localeCompare(note1.createdAt));
+
   if (filteredNotes.length === 0) {
     return (
       <div className="text-gray-400 font-bold flex h-full text-xl">
