@@ -10,3 +10,7 @@
   border-right-color: #aa3a3a;
   border-top-color: #aa3a3a;
 }
+
+.labelList-height {
+  height: 98vh;
+}

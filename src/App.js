@@ -1,7 +1,6 @@
-import logo from "./logo.svg";
 import "./index.css";
 import "./App.css";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { SignUp } from "./pages/SignUp";
 import { Home } from "./pages/Home";
@@ -16,6 +15,7 @@ import { API_STATUS } from "./constants";
 import { useNotes } from "./contexts/notes-context";
 import { Loader } from "./components/Loader";
 import { useToast } from "./contexts/toast-context";
+import { Error } from "./components/Error";
 
 function App() {
   const { token } = useAuth();
@@ -23,19 +23,25 @@ function App() {
   const { toast } = useToast();
   const [isLabelListOpen, setLabelListOpen] = useState(false);
   const [status, setStatus] = useState(API_STATUS.IDLE);
-  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (token) {
-      fetchNotes({ token, notesDispatch, setStatus, setErrorMessage });
-      fetchLabelList({ token, notesDispatch, setStatus, setErrorMessage });
+      fetchNotes({ token, notesDispatch, setStatus });
+      fetchLabelList({ token, notesDispatch, setStatus });
     }
   }, [token, notesDispatch]);
 
-  if (status === "loading") {
+  if (status === API_STATUS.LOADING) {
     return (
       <div>
         <Loader />
+      </div>
+    );
+  }
+  if (status === API_STATUS.ERROR) {
+    return (
+      <div>
+        <Error />
       </div>
     );
   }

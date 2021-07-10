@@ -1,11 +1,7 @@
 import axios from "axios";
 import { API_STATUS, API_URL } from "../constants";
-export const fetchNotes = async ({
-  token,
-  notesDispatch,
-  setStatus,
-  setErrorMessage,
-}) => {
+
+export const fetchNotes = async ({ token, notesDispatch, setStatus }) => {
   try {
     setStatus(API_STATUS.LOADING);
     const { data, status } = await axios.get(`${API_URL}/notes`, {
@@ -23,6 +19,5 @@ export const fetchNotes = async ({
     }
   } catch (error) {
     setStatus(API_STATUS.ERROR);
-    setErrorMessage(error);
   }
 };
