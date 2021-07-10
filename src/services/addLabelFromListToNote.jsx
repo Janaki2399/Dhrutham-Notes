@@ -4,11 +4,11 @@ export const addLabelFromListToNote = async ({
   postObject,
   token,
   notesDispatch,
-  setStatus,
+  setLabelStatus,
   showToast,
 }) => {
   try {
-    setStatus(API_STATUS.LOADING);
+    setLabelStatus(API_STATUS.LOADING);
 
     const { data, status } = await axios.post(
       `${API_URL}/notes/${postObject.noteId}/labels/`,
@@ -24,11 +24,11 @@ export const addLabelFromListToNote = async ({
         type: "ADD_LABEL_FROM_LIST_TO_NOTE",
         payload: { label: postObject.label, noteId: postObject.noteId },
       });
-      setStatus(API_STATUS.SUCCESS);
+      setLabelStatus(API_STATUS.SUCCESS);
     }
   } catch (error) {
     console.log(error);
-    setStatus(API_STATUS.ERROR);
+    setLabelStatus(API_STATUS.ERROR);
     showToast("Something went wrong");
   }
 };

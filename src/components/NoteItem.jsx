@@ -15,6 +15,7 @@ import { NotesInput } from "./NotesInput";
 import { deleteNote } from "../services/deleteNote";
 import { API_STATUS } from "../constants";
 import { useToast } from "../contexts/toast-context";
+import { Loader } from "./Loader";
 
 export const NoteItem = ({
   noteId,
@@ -29,6 +30,7 @@ export const NoteItem = ({
   const [isLabelDropDownOpen, setLabelDropDownOpen] = useState(false);
   const [modal, setModal] = useState(false);
   const [status, setStatus] = useState(API_STATUS.IDLE);
+  const [labelStatus, setLabelStatus] = useState(API_STATUS.IDLE);
   const [colorChangeStatus, setColorChangeStatus] = useState(API_STATUS.IDLE);
   const [deleteStatus, setDeleteStatus] = useState(API_STATUS.IDLE);
   const { token } = useAuth();
@@ -82,7 +84,7 @@ export const NoteItem = ({
       postObject,
       token,
       notesDispatch,
-      setStatus,
+      setLabelStatus,
       showToast,
     });
     setInput("");
@@ -97,7 +99,7 @@ export const NoteItem = ({
         postObject,
         token,
         notesDispatch,
-        setStatus,
+        setLabelStatus,
         showToast,
       });
     } else {
@@ -105,7 +107,7 @@ export const NoteItem = ({
         deleteObject,
         token,
         notesDispatch,
-        setStatus,
+        setLabelStatus,
         showToast,
       });
     }
@@ -155,12 +157,17 @@ export const NoteItem = ({
                 </span>
               </button>
             </div>
-
-            <button className=" focus:outline-none" onClick={deleteNoteItem}>
-              <span className="material-icons-outlined text-gray-500 ">
-                delete
-              </span>
-            </button>
+            {deleteStatus === API_STATUS.LOADING ? (
+              <div>
+                <Loader />
+              </div>
+            ) : (
+              <button className=" focus:outline-none" onClick={deleteNoteItem}>
+                <span className="material-icons-outlined text-gray-500 ">
+                  delete
+                </span>
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -170,6 +177,7 @@ export const NoteItem = ({
         labelCreationAction={createLabel}
         checkboxTogglingAction={toggleCheckBox}
         isLabelInList={checkIfLabelExistsInList}
+        labelStatus={labelStatus}
       />
       {modal && (
         <Modal>

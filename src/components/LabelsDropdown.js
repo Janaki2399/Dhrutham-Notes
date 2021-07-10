@@ -2,12 +2,15 @@ import { useState } from "react";
 import { useNotes } from "../contexts/notes-context";
 import { LabelCheckBox } from "./LabelCheckbox";
 import { useDebounce } from "../hooks/useDebounce";
+import { API_STATUS } from "../constants";
+import { Loader } from "./Loader";
 
 export const LabelsDropdown = ({
   isLabelDropDownOpen,
   labelCreationAction,
   checkboxTogglingAction,
   isLabelInList,
+  labelStatus,
 }) => {
   const {
     notesState: { labelsList },
@@ -22,7 +25,7 @@ export const LabelsDropdown = ({
 
   const getLabelDropDownStyles = () => {
     if (isLabelDropDownOpen) {
-      return "block absolute border-2 z-10  w-44 bg-white -bottom-48  left-10 shadow-xl";
+      return "block flex flex-col absolute border-2 z-10 h-44 w-44 bg-white -bottom-48  left-10 shadow-xl";
     }
     return "hidden ";
   };
@@ -40,6 +43,15 @@ export const LabelsDropdown = ({
     setInput(e.target.value);
   };
 
+  if (labelStatus === API_STATUS.LOADING) {
+    return (
+      <div className={getLabelDropDownStyles()}>
+        <div className="mx-auto">
+          <Loader />
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={getLabelDropDownStyles()}>
       <div className="drop-down w-30 h-36 overflow-y-auto">

@@ -4,11 +4,11 @@ export const removeLabelFromNote = async ({
   deleteObject,
   token,
   notesDispatch,
-  setStatus,
+  setLabelStatus,
   showToast,
 }) => {
   try {
-    setStatus(API_STATUS.LOADING);
+    setLabelStatus(API_STATUS.LOADING);
 
     const { data, status } = await axios.delete(
       `${API_URL}/notes/${deleteObject.noteId}/labels/${deleteObject.labelId}`,
@@ -23,10 +23,10 @@ export const removeLabelFromNote = async ({
         type: "REMOVE_LABEL_FROM_NOTE",
         payload: { labelId: deleteObject.labelId, noteId: deleteObject.noteId },
       });
-      setStatus(API_STATUS.SUCCESS);
+      setLabelStatus(API_STATUS.SUCCESS);
     }
   } catch (error) {
-    setStatus(API_STATUS.ERROR);
+    setLabelStatus(API_STATUS.ERROR);
     showToast("Something went wrong");
   }
 };

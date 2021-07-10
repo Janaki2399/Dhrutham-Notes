@@ -3,11 +3,11 @@ export function LabelCheckBox({ item, checkboxTogglingAction, isLabelInList }) {
     checkboxTogglingAction(event, item);
   };
   return (
-    <div className="flex cursor-pointer ml-2">
+    <div className="flex justify-items-center cursor-pointer ml-2">
       <input
         type="checkbox"
         id={item._id}
-        className="mr-1 h-4 "
+        className="mr-1 h-4 flex justify-items-center"
         checked={isLabelInList(item._id)}
         onChange={handleToggling}
       />
