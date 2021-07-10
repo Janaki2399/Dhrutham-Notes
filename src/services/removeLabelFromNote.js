@@ -10,7 +10,7 @@ export const removeLabelFromNote = async ({
   try {
     setLabelStatus(API_STATUS.LOADING);
 
-    const { data, status } = await axios.delete(
+    const { status } = await axios.delete(
       `${API_URL}/notes/${deleteObject.noteId}/labels/${deleteObject.labelId}`,
       {
         headers: {

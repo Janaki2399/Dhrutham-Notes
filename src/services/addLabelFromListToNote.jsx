@@ -10,7 +10,7 @@ export const addLabelFromListToNote = async ({
   try {
     setLabelStatus(API_STATUS.LOADING);
 
-    const { data, status } = await axios.post(
+    const { status } = await axios.post(
       `${API_URL}/notes/${postObject.noteId}/labels/`,
       postObject,
       {

@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Pin } from "./Pin";
 import { ColorPalette } from "./ColorPalette";
 import { API_STATUS } from "../constants";
