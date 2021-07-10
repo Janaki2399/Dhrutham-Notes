@@ -59,7 +59,7 @@ export const Login = () => {
         </div>
         <form
           onSubmit={handleSubmit}
-          className="max-w-6xl border p-7 shadow-lg bg-white"
+          className="max-w-3xl border p-7 shadow-lg bg-white"
           noValidate
         >
           <div className="text-2xl mb-3 text-center font-semibold">Login</div>

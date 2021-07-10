@@ -13,10 +13,10 @@ export const NavBar = ({ setLabelListOpen }) => {
   };
   setupAuthExceptionHandler(logout, navigate);
   return (
-    <nav className="navbar flex justify-between align-middle fixed z-10 justify-items-center">
-      <div className="flex ">
+    <nav className="navbar flex justify-between items-center align-middle fixed z-10 justify-items-center">
+      <div className="flex">
         <button
-          className="md:hidden cursor-pointer focus:outline-none"
+          className="md:hidden cursor-pointer focus:outline-none flex items-center"
           onClick={() => setLabelListOpen((prevState) => !prevState)}
         >
           <span className="material-icons-outlined">menu</span>
@@ -31,13 +31,16 @@ export const NavBar = ({ setLabelListOpen }) => {
         </div>
       </div>
 
-      <div className="mr-3">
+      <div className="mr-3 flex ">
         {!token ? (
           <Link to="/login" className=" nav-item anchor-link">
             Login
           </Link>
         ) : (
-          <div className="nav-item cursor-pointer" onClick={logout}>
+          <div
+            className="nav-item cursor-pointer flex items-center "
+            onClick={logout}
+          >
             <span className="material-icons-outlined">logout</span>
           </div>
         )}

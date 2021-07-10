@@ -10,17 +10,17 @@ import { updateNote } from "../services/updateNote";
 import { useNotes } from "../contexts/notes-context";
 import { LabelsDropdown } from "./LabelsDropdown";
 import { LabelPills } from "./LabelPills";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { useToast } from "../contexts/toast-context";
 
 export const NotesInput = ({ noteItem, isNoteUpdate, setModal }) => {
   const { token } = useAuth();
   const { labelName } = useParams();
+  const location = useLocation();
   const notesRef = useRef(null);
+
   const { notesDispatch } = useNotes();
   const { showToast } = useToast();
-
-  // const {state,dispatch}=useReducer(inputRedinitialState)
 
   const [title, setTitle] = useState(() => {
     return isNoteUpdate ? noteItem.title : "";
@@ -35,20 +35,15 @@ export const NotesInput = ({ noteItem, isNoteUpdate, setModal }) => {
     return isNoteUpdate ? noteItem.labelList : [];
   });
 
-  // const memoizedCallback = useCallback(() => {
-  //   labelList.concat(labelName);
-  // }, [labelName, labelList]);
-
-  // console.log(labelList);
-  // useEffect(() => {
-  //   labelName &&
-  //     setLabelList((prevList) =>
-  //       prevList.concat({ name: labelName, _id: 3344 })
-  //     );
-  // }, [labelName]);
   const [status, setStatus] = useState(API_STATUS.IDLE);
-  const [errorMessage, setErrorMessage] = useState("");
+
   const [isLabelDropDownOpen, setLabelDropDownOpen] = useState(false);
+
+  useEffect(() => {
+    labelName
+      ? setLabelList([{ name: labelName, _id: location.state.id }])
+      : setLabelList([]);
+  }, [labelName, location?.state?.id]);
 
   useEffect(() => {
     notesRef.current.focus();
@@ -84,7 +79,7 @@ export const NotesInput = ({ noteItem, isNoteUpdate, setModal }) => {
     setPinStatus(false);
     setColor("#F9FAFB");
     setTitle("");
-    setLabelList([]);
+    !labelName && setLabelList([]);
     notesRef.current.innerText = "";
   };
 
