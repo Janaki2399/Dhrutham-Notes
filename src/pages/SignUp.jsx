@@ -64,7 +64,7 @@ export function SignUp() {
         </div>
         <form
           onSubmit={handleSignUp}
-          className="max-w-2xl border p-7 shadow-lg"
+          className="max-w-2xl border p-7 shadow-lg s"
           noValidate
         >
           <div className="text-xl mb-3 text-center font-semibold">Sign Up</div>
@@ -157,8 +157,8 @@ export function SignUp() {
 
 export const InputError = ({ error }) => {
   return (
-    <span role="alert" className="error-text">
+    <div role="alert" className="error-text">
       {error}
-    </span>
+    </div>
   );
 };
