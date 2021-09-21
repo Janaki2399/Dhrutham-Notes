@@ -15,6 +15,7 @@ Manage your Notes.Inspired by Google keep App
 - Notes Management - Add, delete, edit notes
 - Tags Management - add new/existing tags to notes,search tags
 - Filter notes by Tags
+- Pin/Unpin Notes
 - Change color of notes
 - User Management
 - Login and SignUp with form validation(without any library)
